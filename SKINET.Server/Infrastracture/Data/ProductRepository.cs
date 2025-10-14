@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SKINET.Server.Entities;
 using SKINET.Server.Entities.Interfaces;
+using System.Net.Sockets;
 
 namespace SKINET.Server.Infrastracture.Data
 {
@@ -28,7 +29,7 @@ namespace SKINET.Server.Infrastracture.Data
             return await context.Products.FindAsync(id);
         }
 
-        public async  Task<IReadOnlyList<Product>> GetProducts(string? brand, string? type)
+        public async  Task<IReadOnlyList<Product>> GetProducts(string? brand, string? type,string? sort)
         {
 
             var query= context.Products.AsQueryable();
@@ -36,11 +37,19 @@ namespace SKINET.Server.Infrastracture.Data
                 query=query.Where(x => x.Brand == brand);
             if (!string.IsNullOrWhiteSpace(type))
                 query = query.Where(x => x.Type == type);
-            return await query.ToListAsync();
-                
+    
+
+            if (!string.IsNullOrWhiteSpace(sort))
+                query = sort switch
+                {
+                    "priceAsc" => query.OrderBy(x => x.Price),
+                     "priceDesc" => query.OrderByDescending(x => x.Price),
+                     _=> query.OrderBy(x => x.Name)
+                };
+            return await query.ToListAsync(); 
         }
 
-       
+
 
         public async Task<IReadOnlyList<string>> GetTyps()
         {
