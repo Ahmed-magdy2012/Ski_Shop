@@ -1,9 +1,10 @@
-using SKINET.Server.Infrastracture.Data;
 using Microsoft.EntityFrameworkCore;
+using SKINET.Server.Entities.Interfaces;
+using SKINET.Server.Infrastracture.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(
 builder.Configuration.GetConnectionString("Default")
@@ -29,6 +30,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+var scope=app.Services.CreateScope().ServiceProvider.GetRequiredService<StoreContext>();
+await scope.Database.MigrateAsync();
+await SeedData.seeding(scope);
+
+
 
 app.MapFallbackToFile("/index.html");
 

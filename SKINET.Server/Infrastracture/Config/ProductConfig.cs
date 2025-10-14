@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SKINET.Server.Entities;
 
-namespace SKINET.Server.Infrastracture.Data.Config
+namespace SKINET.Server.Infrastracture.Config
 {
     public class ProductConfig : IEntityTypeConfiguration<Product>
     {

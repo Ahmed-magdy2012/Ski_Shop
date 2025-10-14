@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SKINET.Server.Entities;
-using SKINET.Server.Infrastracture.Data.Config;
+using SKINET.Server.Infrastracture.Config;
+
 namespace SKINET.Server.Infrastracture.Data
 
 {
