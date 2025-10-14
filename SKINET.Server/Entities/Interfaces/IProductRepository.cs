@@ -3,7 +3,7 @@
     public interface IProductRepository
     {
 
-        Task<IReadOnlyList<Product>> GetProducts();
+        Task<IReadOnlyList<Product>> GetProducts(string? brand,string?type);
 
         Task<IReadOnlyList<string>> GetBrands();
 

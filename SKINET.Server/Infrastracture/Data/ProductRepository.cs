@@ -28,11 +28,19 @@ namespace SKINET.Server.Infrastracture.Data
             return await context.Products.FindAsync(id);
         }
 
-        public async  Task<IReadOnlyList<Product>> GetProducts()
+        public async  Task<IReadOnlyList<Product>> GetProducts(string? brand, string? type)
         {
-            return await context.Products.ToListAsync();
+
+            var query= context.Products.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(brand)) 
+                query=query.Where(x => x.Brand == brand);
+            if (!string.IsNullOrWhiteSpace(type))
+                query = query.Where(x => x.Type == type);
+            return await query.ToListAsync();
                 
         }
+
+       
 
         public async Task<IReadOnlyList<string>> GetTyps()
         {

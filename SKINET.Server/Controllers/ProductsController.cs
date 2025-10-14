@@ -12,9 +12,9 @@ namespace SKINET.Server.Controllers
     {
         
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? kind)
         {
-            return Ok(await repo.GetProducts());
+            return Ok(await repo.GetProducts(brand, kind));
         }
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
