@@ -4,6 +4,11 @@
     {
 
         Task<IReadOnlyList<Product>> GetProducts();
+
+        Task<IReadOnlyList<string>> GetBrands();
+
+        Task<IReadOnlyList<string>> GetTyps();
+
         Task<Product> GetProductById(int id);
         void addProduct(Product product);
         void UpdateProduct(Product product);

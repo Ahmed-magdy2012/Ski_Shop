@@ -57,10 +57,25 @@ namespace SKINET.Server.Controllers
             }
             return BadRequest("problem Deleting the product");
         }
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
+        {
+
+            return Ok(await repo.GetBrands()); 
+
+        }
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
+        {
+
+            return Ok(await repo.GetBrands());
+
+        }
 
         private bool Productexits(int id)
         {
             return repo.ProductExists(id);
         }
+
     }
 }

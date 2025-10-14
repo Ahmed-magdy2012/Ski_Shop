@@ -11,8 +11,8 @@ using SKINET.Server.Infrastracture.Data;
 namespace SKINET.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20251013140759_CreateTable")]
-    partial class CreateTable
+    [Migration("20251014173507_Newtable")]
+    partial class Newtable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,10 +51,10 @@ namespace SKINET.Server.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("QuantityInstock")
+                    b.Property<int>("QuantityInStock")
                         .HasColumnType("int");
 
-                    b.Property<string>("type")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
