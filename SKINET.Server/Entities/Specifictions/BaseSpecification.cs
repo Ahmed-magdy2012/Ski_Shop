@@ -14,6 +14,12 @@ namespace SKINET.Server.Entities.Specifictions
 
         public bool? IsDistinct  {get;private set;}
 
+        public int Take { get; private set; }
+
+        public int Skip { get; private set; }
+
+        public int IspagingEnabeld { get; private set; }
+
         protected void AddorderBy(Expression<Func<T, object>> OrderBy)
         {
             this.OrderBy = OrderBy;
