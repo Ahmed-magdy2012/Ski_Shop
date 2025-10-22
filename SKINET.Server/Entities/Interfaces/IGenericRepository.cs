@@ -16,6 +16,7 @@
         void Update(T entity);
         Task<bool> Saveall();
         bool exists(int  id);
+        Task<int> count(ISpecification<T> SPEc);
     }
 
 }

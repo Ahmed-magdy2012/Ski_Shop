@@ -2,14 +2,15 @@
 {
     public class ProductSpecification : BaseSpecification<Product>
     {
-        public ProductSpecification(string? brand,string? type,string? sort):base(x =>
-
-            (string.IsNullOrWhiteSpace(brand)|| x.Brand == brand)&&
-            (string.IsNullOrWhiteSpace(type)|| x.Type == type)
+        public ProductSpecification( ProductParams param):base(x =>
+            (string.IsNullOrEmpty(param.Search )||x.Name.ToLower().Contains(param.Search))&&
+            (param.Brand.Count==0||param.Brand.Contains(x.Brand))&&
+            (param.Types.Count == 0 || param.Types.Contains(x.Type))  
             )
         {
+            ApplyPaging(param.Pagesize * (param.Pageindex - 1), param.Pagesize);
 
-            switch(sort){
+            switch(param.Sort){
                 case "PriceAsc":
                     AddorderBy(x => x.Price);
                        break;

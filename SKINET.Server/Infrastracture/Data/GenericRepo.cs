@@ -11,6 +11,13 @@ namespace SKINET.Server.Infrastracture.Data
             context.Set<T>().Add(entity);
         }
 
+        public async Task<int> count(ISpecification<T> SPEc)
+        {
+            var query=context.Set<T>().AsQueryable();
+            query=SPEc.ApplyDATA(query);
+            return  await query.CountAsync();
+        }
+
         public void Delete(T entity)
         {
             context.Set<T>().Remove(entity);

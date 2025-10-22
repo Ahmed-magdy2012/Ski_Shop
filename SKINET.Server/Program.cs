@@ -1,7 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using SKINET.Server.Entities.Interfaces;
 using SKINET.Server.Infrastracture.Data;
+using SKINET.Server.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
 
 // Add services to the container.
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
@@ -15,7 +23,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
+app.UseMiddleware<middlewareException>();
+app.UseCors("AllowAll");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

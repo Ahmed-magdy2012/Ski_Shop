@@ -4,6 +4,7 @@ using SKINET.Server.Entities;
 using SKINET.Server.Entities.Interfaces;
 using SKINET.Server.Entities.Specifictions;
 using SKINET.Server.Infrastracture.Data;
+using SKINET.Server.RequestHelpers;
 using System.Linq.Expressions;
 
 namespace SKINET.Server.Controllers
@@ -15,11 +16,14 @@ namespace SKINET.Server.Controllers
     
         
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? kind,string? sort)
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery]ProductParams param)
         {
-            var spec = new ProductSpecification(brand, kind, sort);
-             
-            return Ok(await repo.ListAsync(spec));
+            var spec = new ProductSpecification(param);
+            var products = await repo.ListAsync(spec);
+            var count=await repo.count(spec);
+            var pagination=new Pagination<Product>(param.Pageindex, param.Pagesize,count,products);
+
+            return Ok(pagination);
         }
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(int id)

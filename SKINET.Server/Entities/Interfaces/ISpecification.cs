@@ -8,10 +8,11 @@ namespace SKINET.Server.Entities.Interfaces
         Expression<Func<T, object>>? OrderBy { get; }
 
         Expression<Func<T, object>>? OrderByDescending { get; }
+        IQueryable<T> ApplyDATA(IQueryable<T> query);
         bool? IsDistinct { get; }
         int Take { get; }
         int Skip {  get; }
-        int IspagingEnabeld { get; } 
+        bool IspagingEnabeld { get; } 
 
     }
     public interface ISpecification<T, Tresult> : ISpecification<T>

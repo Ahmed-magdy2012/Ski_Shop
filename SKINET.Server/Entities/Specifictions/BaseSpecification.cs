@@ -18,7 +18,16 @@ namespace SKINET.Server.Entities.Specifictions
 
         public int Skip { get; private set; }
 
-        public int IspagingEnabeld { get; private set; }
+        public bool IspagingEnabeld { get; private set; }
+
+        public IQueryable<T> ApplyDATA(IQueryable<T> query)
+        {
+            if(WhereBrandAndType != null)
+            {
+                query= query.Where(WhereBrandAndType);
+            }
+            return query;
+        }
 
         protected void AddorderBy(Expression<Func<T, object>> OrderBy)
         {
@@ -32,6 +41,12 @@ namespace SKINET.Server.Entities.Specifictions
         protected void ApplyDitinct()
         {
             IsDistinct=true;
+        }
+        protected void ApplyPaging(int skip,int take)
+        {
+            Skip = skip;
+            Take=take;
+            IspagingEnabeld = true;   
         }
 
 

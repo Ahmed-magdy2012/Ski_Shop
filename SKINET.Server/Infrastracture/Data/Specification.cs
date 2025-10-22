@@ -19,6 +19,10 @@ namespace SKINET.Server.Infrastracture.Data
             {
             query=query.OrderByDescending(specification.OrderByDescending);
             }
+            if (specification.IspagingEnabeld)
+            {
+                query=query.Skip(specification.Skip).Take(specification.Take);
+            }
             return query;
         }
         public static IQueryable<Tresult> Get<Tresult>(IQueryable<T> query, ISpecification<T,Tresult> specification)
@@ -32,6 +36,10 @@ namespace SKINET.Server.Infrastracture.Data
             if (specification.IsDistinct==true)
             {
                select= select?.Distinct();
+            }
+            if (specification.IspagingEnabeld)
+            {
+                select = select?.Skip(specification.Skip).Take(specification.Take);
             }
 
             return select??query.Cast<Tresult>() ;
