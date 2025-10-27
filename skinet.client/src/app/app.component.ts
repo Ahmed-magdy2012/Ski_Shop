@@ -1,38 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { HeaderComponent } from './Layout/header/header.component';
+import { RouterOutlet } from '@angular/router';
 
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+
 
 @Component({
+  imports: [HeaderComponent],
+  standalone: true,
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  standalone: false,
+  templateUrl: './app.component.html', 
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.getForecasts();
-  }
-
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
+export class AppComponent {
   title = 'skinet.client';
 }
+
+
+ 
+    
+  
+

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using SKINET.Server.Entities.Interfaces;
 using SKINET.Server.Infrastracture.Data;
 using SKINET.Server.Middlewares;
@@ -20,7 +21,16 @@ builder.Configuration.GetConnectionString("Default")
     ));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.AddServer(new OpenApiServer
+    {
+        Description = "SHOP",
+        Url = "https://localhost:7038"
+    });
+
+    c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"] 
+      }");
+});
 
 var app = builder.Build();
 app.UseMiddleware<middlewareException>();
