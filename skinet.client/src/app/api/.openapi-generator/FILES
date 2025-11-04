@@ -12,6 +12,7 @@ index.ts
 model/createProductDto.ts
 model/models.ts
 model/product.ts
+model/productPagination.ts
 param.ts
 provide-api.ts
 variables.ts

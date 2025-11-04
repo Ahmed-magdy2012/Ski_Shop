@@ -18,6 +18,8 @@ import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
 import { Product } from '../model/product';
+// @ts-ignore
+import { ProductPagination } from '../model/productPagination';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -280,9 +282,9 @@ export class ProductsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getProducts(pageindex?: number, pagesize?: number, brand?: Array<string>, types?: Array<string>, sort?: string, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<Product>>;
-    public getProducts(pageindex?: number, pagesize?: number, brand?: Array<string>, types?: Array<string>, sort?: string, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<Product>>>;
-    public getProducts(pageindex?: number, pagesize?: number, brand?: Array<string>, types?: Array<string>, sort?: string, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<Product>>>;
+    public getProducts(pageindex?: number, pagesize?: number, brand?: Array<string>, types?: Array<string>, sort?: string, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<ProductPagination>;
+    public getProducts(pageindex?: number, pagesize?: number, brand?: Array<string>, types?: Array<string>, sort?: string, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ProductPagination>>;
+    public getProducts(pageindex?: number, pagesize?: number, brand?: Array<string>, types?: Array<string>, sort?: string, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ProductPagination>>;
     public getProducts(pageindex?: number, pagesize?: number, brand?: Array<string>, types?: Array<string>, sort?: string, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -302,11 +304,13 @@ export class ProductsService extends BaseService {
                   <any>element, 'Types');
             })
         }
+   
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>sort, 'Sort');
+      if (search) {
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>search, 'Search');
-
+      }
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
@@ -336,7 +340,7 @@ export class ProductsService extends BaseService {
 
         let localVarPath = `/api/Products`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<Product>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<ProductPagination>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

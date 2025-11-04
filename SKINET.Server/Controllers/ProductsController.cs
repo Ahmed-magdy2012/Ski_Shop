@@ -16,7 +16,7 @@ namespace SKINET.Server.Controllers
     
         
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery]ProductParams param)
+        public async Task<ActionResult<Pagination<Product>>> GetProducts([FromQuery]ProductParams param)
         {
             var spec = new ProductSpecification(param);
             var products = await repo.ListAsync(spec);
