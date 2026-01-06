@@ -304,13 +304,11 @@ export class ProductsService extends BaseService {
                   <any>element, 'Types');
             })
         }
-   
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>sort, 'Sort');
-      if (search) {
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>search, 'Search');
-      }
+
         let localVarHeaders = this.defaultHeaders;
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([

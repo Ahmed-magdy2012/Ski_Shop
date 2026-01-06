@@ -50,6 +50,10 @@ export class ShopComponent {
     this.getProducts();
 
   }
+
+
+  getproduct(id:number) {
+  }
   
   getProducts() {
     

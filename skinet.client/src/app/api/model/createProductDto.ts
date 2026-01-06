@@ -10,12 +10,12 @@
 
 
 export interface CreateProductDto { 
-    name: string;
-    description: string;
+    name?: string;
+    description?: string;
     price?: number;
-    pictureUrl: string;
-    type: string;
+    pictureUrl?: string;
+    type?: string;
     quantityInStock?: number;
-    brand: string;
+    brand?: string;
 }
 

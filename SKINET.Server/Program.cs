@@ -3,16 +3,21 @@ using Microsoft.OpenApi.Models;
 using SKINET.Server.Entities.Interfaces;
 using SKINET.Server.Infrastracture.Data;
 using SKINET.Server.Middlewares;
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader());
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy
+            .WithOrigins("https://localhost:4296")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
-
 // Add services to the container.
+
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepo<>));
 builder.Services.AddControllers();
@@ -34,7 +39,7 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 app.UseMiddleware<middlewareException>();
-app.UseCors("AllowAll");
+app.UseCors("AllowAngular");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -45,17 +50,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
-var scope=app.Services.CreateScope().ServiceProvider.GetRequiredService<StoreContext>();
+
+
+var scope =app.Services.CreateScope().ServiceProvider.GetRequiredService<StoreContext>();
 await scope.Database.MigrateAsync();
 await SeedData.seeding(scope);
 
 
-
-app.MapFallbackToFile("/index.html");
 
 app.Run();

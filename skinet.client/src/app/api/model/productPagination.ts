@@ -14,6 +14,6 @@ export interface ProductPagination {
     pageIndex?: number;
     pageSize?: number;
     count?: number;
-    data?: Array<Product>;
+    data?: Array<Product> | null;
 }
 

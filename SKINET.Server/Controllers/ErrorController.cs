@@ -25,12 +25,12 @@ namespace SKINET.Server.Controllers
             return NotFound();
         }
         [HttpGet("internalError")]
-        public IActionResult GetinternalErrord()
+        public IActionResult GetinternalError()
         {
            throw new  Exception("this a test exception");
         }
         [HttpPost("validation")]
-        public IActionResult GetValidation(CreateProductDto product)
+        public IActionResult GetValidation( CreateProductDto product)
         {
             return Ok();
         }
