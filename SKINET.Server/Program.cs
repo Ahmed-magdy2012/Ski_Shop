@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SKINET.Server.Entities.Interfaces;
 using SKINET.Server.Infrastracture.Data;
+using SKINET.Server.Infrastracture.NewFolder;
 using SKINET.Server.Middlewares;
+using StackExchange.Redis;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,20 +19,32 @@ builder.Services.AddCors(options =>
     });
 });
 // Add services to the container.
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var config = builder.Configuration.GetConnectionString("Redis")
+    ?? throw new Exception("cannot get redis connection string");
+    var configration=ConfigurationOptions.Parse(config,true);
+    return ConnectionMultiplexer.Connect(configration);
+});
 
+builder.Services.AddSingleton<ICartService, CartService>();
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepo<>));
 builder.Services.AddControllers();
+
+
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(
 builder.Configuration.GetConnectionString("Default")
     ));
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
     c.AddServer(new OpenApiServer
     {
         Description = "SHOP",
-        Url = "https://localhost:7038"
+        Url = "http://localhost:5010/"
     });
 
     c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"] 

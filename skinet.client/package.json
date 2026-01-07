@@ -25,6 +25,7 @@
     "@tailwindcss/cli": "^4.1.16",
     "@tailwindcss/postcss": "^4.1.16",
     "jest-editor-support": "*",
+    "nanoid": "^5.1.6",
     "run-script-os": "*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
