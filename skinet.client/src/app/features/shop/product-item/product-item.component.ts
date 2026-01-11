@@ -1,10 +1,12 @@
-import { Component, Input } from '@angular/core';
-import { Product } from '../../../api';
-import { MatCard, MatCardActions, MatCardContent, MatCardModule } from '@angular/material/card';
+import { Component, input, Input } from '@angular/core';
+import { Product } from '../../../api/';
+import { MatCard, MatCardActions, MatCardContent } from '@angular/material/card';
 import { CurrencyPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { inject } from '@angular/core';
+import { CartSignalService } from '../../../api/api/cart-signal.service';
 
 @Component({
   imports: [
@@ -22,4 +24,8 @@ import { RouterLink } from '@angular/router';
 })
 export class ProductItemComponent {
   @Input() product?: Product;
+
+
+  cartservice = inject(CartSignalService)
+
 }

@@ -10,10 +10,10 @@
 
 
 export interface Product { 
-    id?: number;
+    id: number;
     name: string | null;
     description: string | null;
-    price?: number;
+    price: number;
     pictureUrl: string | null;
     type: string | null;
     quantityInStock?: number;

@@ -4,5 +4,5 @@ export class shopParams {
   sort: string = "name"
   pageIndex = 1;
   pageSize = 20
-  search: string | undefined
+  search: string=""
 } 

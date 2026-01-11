@@ -35,7 +35,7 @@ export class ShopComponent {
     , { name: 'Price: High-Low', value: 'PriceDesc' }
   ]
 
-   shopparams :shopParams = new shopParams()
+   shopparams  = new shopParams()
   pageSizeOptions=[5,10,15,15,20]
 
   constructor(private product: ProductsService) {
@@ -52,23 +52,32 @@ export class ShopComponent {
   }
 
 
-  getproduct(id:number) {
-  }
+
   
   getProducts() {
     
     this.product.getProducts(this.shopparams.pageIndex,
-      this.shopparams.pageSize, this.shopparams.brand, this.shopparams.types, this.shopparams.sort, this.shopparams.search
+      this.shopparams.pageSize,
+      this.shopparams.brand,
+      this.shopparams.types,
+      this.shopparams.sort,
+      this.shopparams.search == "" ? undefined : this.shopparams.search
+
 
          
 
 
     ).subscribe({
       next: (response) => {
+
         this.products = response;
         console.log(response)
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.log(this.shopparams.search)
+        console.error(err)
+ }
+        
 
     });
   }

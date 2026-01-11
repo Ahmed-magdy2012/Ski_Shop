@@ -1,0 +1,50 @@
+<div class="mx-auto w-full max-w-4xl space-y-4">
+    <div class=" text-primary space-y-4 rounded-lg border border-gray-200 bg-white p-4 text-start shadow-sm">
+
+        <p class="text-xl font-semibold">Order summary</p>
+        <div class="space-y-4">
+            <div class="space-y-2">
+                <dl class=" flex justify-between">
+                    <dt class="font-semibold text-gray-500">Subtotal</dt>
+                    <dd class="font-semibold text-gray-900">{{cartservice.Totals().subTotal|currency }}</dd>
+                </dl>
+                <dl class=" flex items-center justify-between">
+                    <dt class="font-semibold text-gray-500">Discount</dt>
+                    <dd class="font-semibold text-green-600">- {{cartservice.Totals().discount|currency}}</dd>
+                </dl>
+                <dl class=" flex items-center justify-between">
+                    <dt class="font-semibold text-gray-500">Delivery fee</dt>
+                    <dd class="font-semibold text-gray-900">{{cartservice.Totals().shipping|currency}}</dd>
+                </dl>
+            </div>
+            <dl class=" flex items-center justify-between space-y-2">
+                <dt class="font-semibold text-gray-500">Total</dt>
+                <dd class="font-semibold text-gray-900">{{cartservice.Totals().total|currency}}</dd>
+            </dl>
+        </div>
+        <div class="flex flex-col gap-2">
+
+            <button routerLink="/checkout" mat-flat-button>
+                Checkout
+            </button>
+
+            <button routerLink="/shop" mat-button >
+                Continue Shopping
+            </button>
+        </div>
+
+    </div>
+
+    <div class=" rounded-lg border border-gray-200 bg-white text-start shadow-sm">
+        <form class="flex flex-col space-y-5 p-2">
+            <label class=" mb-5 text-sm font-medium">
+                Do you have a voucher code?
+            </label>
+            <mat-form-field appearance="outline">
+                <mat-label> Voucher code</mat-label>
+                <input type="text" matInput />
+            </mat-form-field>
+            <button mat-flat-button>Apply code</button>
+        </form>
+    </div>
+</div>

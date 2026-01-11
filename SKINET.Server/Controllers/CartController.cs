@@ -18,7 +18,7 @@ namespace SKINET.Server.Controllers
             return Ok(cart ?? new ShopCart { Id = id });
 
         }
-
+       
 
         [HttpPost]
         public async Task<ActionResult<ShopCart>> UpdateCart( ShopCart cart)

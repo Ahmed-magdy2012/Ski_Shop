@@ -6,6 +6,5 @@
         Task<ShopCart?> GetCart(String key);
         Task<ShopCart?> SetCart(ShopCart cart);
         Task<bool> DeletCart(String key);
-
     }
 }

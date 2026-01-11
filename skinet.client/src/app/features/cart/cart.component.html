@@ -1,1 +1,17 @@
-<p>cart works!</p>
+<section>
+    <div class="mx-auto max-w-screen-xl">
+        <div class="mt-32 flex w-full gap-6">
+            <div class="w-3/4">
+                @if (cartservice.cart(); as cart) {
+
+                @for(item of cart.items;track item.productId){
+                <app-cart-item [item]="item"></app-cart-item>
+                }
+                }
+            </div>
+            <div class="w-1/4">
+                <app-ordar-summary></app-ordar-summary>
+            </div>
+        </div>
+    </div>
+</section>

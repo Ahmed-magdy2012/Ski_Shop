@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 .text-primary {
-  color:#7d00fa
- 
+  color: #7d00fa !important;
 }
-
+.mat-mdc-button {
+  color: #7d00fa !important;
+}
 
 
 .mat-mdc-outlined-button {

@@ -7,6 +7,7 @@ import { TestErrorComponent } from './features/test-error/test-error.component';
 import { NotFoundComponent } from './Shared/components/not-found/not-found.component';
 import { ServerErrorComponent } from './Shared/components/server-error/server-error.component';
 import { CartComponent } from './features/cart/cart.component';
+import { ChekoutComponent } from './features/chekout/chekout.component';
 
 export const routes: Routes = [
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'test-error', component: TestErrorComponent },
   { path: 'NotFound', component: NotFoundComponent },
   { path: 'server', component: ServerErrorComponent },
+  { path: 'checkout', component: ChekoutComponent },
   { path: '**', redirectTo: "NotFound", pathMatch: "full" },
 
 
