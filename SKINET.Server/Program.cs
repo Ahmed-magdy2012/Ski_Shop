@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using SKINET.Server.Entities;
 using SKINET.Server.Entities.Interfaces;
 using SKINET.Server.Infrastracture.Data;
 using SKINET.Server.Infrastracture.NewFolder;
@@ -28,6 +29,10 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 });
 
 builder.Services.AddSingleton<ICartService, CartService>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<StoreContext>();
+
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepo<>));
 builder.Services.AddControllers();
@@ -40,16 +45,7 @@ builder.Configuration.GetConnectionString("Default")
 
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
-    c.AddServer(new OpenApiServer
-    {
-        Description = "SHOP",
-        Url = "http://localhost:5010/"
-    });
-
-    c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"] 
-      }");
-});
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 app.UseMiddleware<middlewareException>();
@@ -70,7 +66,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapIdentityApi<AppUser>();
 
 var scope =app.Services.CreateScope().ServiceProvider.GetRequiredService<StoreContext>();
 await scope.Database.MigrateAsync();

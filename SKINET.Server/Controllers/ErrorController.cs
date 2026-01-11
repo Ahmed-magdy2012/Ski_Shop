@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SKINET.Server.DTOS;
 using SKINET.Server.Entities;
 using SKINET.Server.Entities.Specifictions;
+using System.Security.Claims;
 
 namespace SKINET.Server.Controllers
 {
@@ -34,5 +36,14 @@ namespace SKINET.Server.Controllers
         {
             return Ok();
         }
+        [Authorize]
+        [HttpGet("secret")]
+        public IActionResult Getsecretn()
+        {
+            var name = User.FindFirst(ClaimTypes.Name)?.Value;
+            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Ok(name + id);
+        }
+
     }
 }

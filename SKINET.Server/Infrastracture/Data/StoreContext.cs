@@ -1,13 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SKINET.Server.Entities;
 using SKINET.Server.Infrastracture.Config;
 
 namespace SKINET.Server.Infrastracture.Data
 
 {
-    public class StoreContext(DbContextOptions options) : DbContext(options )
+    public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>(options )
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<Address> addresses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
