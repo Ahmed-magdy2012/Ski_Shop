@@ -9,6 +9,7 @@ import { errorInterceptorInterceptor } from './app/Core/error-interceptor.interc
 import { loadingInterceptor } from './app/Core/loading.interceptor';
 import { InitService } from './app/api/api/init.service';
 import { lastValueFrom } from 'rxjs';
+import { authInterceptor } from './app/Core/auth.interceptor';
 
 
 function intializeapp(initservice: InitService) {
@@ -25,7 +26,11 @@ bootstrapApplication(AppComponent, {
    
     importProvidersFrom(HttpClientModule) ,
     provideRouter(routes),
-    provideHttpClient(withInterceptors([errorInterceptorInterceptor, loadingInterceptor])),
+    provideHttpClient(withInterceptors([
+      errorInterceptorInterceptor,
+      loadingInterceptor,
+      authInterceptor
+    ])),
     {
 
       provide: APP_INITIALIZER,

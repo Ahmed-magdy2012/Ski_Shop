@@ -22,9 +22,9 @@ namespace SKINET.Server.Controllers
                 Firstname = registerDto.FirstName,
                 LastName = registerDto.LastName,
                 Email = registerDto.Email,
-                UserName = registerDto.Email
-
-
+                UserName = registerDto.Email,
+                
+              
             };
             var result = await _signIn.UserManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) {
@@ -49,12 +49,12 @@ namespace SKINET.Server.Controllers
         [HttpGet("user_info")]
         public async Task<ActionResult> GetUserInfo()
         {
-           // var user1 = await _signIn.UserManager.GetUserAsync(User);
+            // var user1 = await _signIn.UserManager.GetUserAsync(User);
 
             if (User.Identity?.IsAuthenticated == false) return NoContent();
 
 
-            var user = await _signIn.UserManager.GetUserbyemail(User);
+            var user = await _signIn.UserManager.GetUserbyemailwithAddress(User);
 
             if (user == null) return Unauthorized();
 
@@ -63,7 +63,8 @@ namespace SKINET.Server.Controllers
             {
                 user.Email,
                 user.Firstname,
-                user.LastName
+                user.LastName,
+                Address=  user.address?.ToDto(),
 
             });
 
@@ -72,14 +73,39 @@ namespace SKINET.Server.Controllers
 
         }
         [HttpGet]
-        public  ActionResult GetAuthState()
+        public ActionResult GetAuthState()
         {
 
             return Ok(new
-            {
-             IsAuthenticated=User.Identity?.IsAuthenticated??false
+            { 
+                IsAuthenticated = User.Identity?.IsAuthenticated ?? false
 
             });
+        }
+
+
+        [Authorize]
+        [HttpPost("address")]
+        public async Task<ActionResult<Address>> CreateOrUpdateAddres(AddressDto addressDto)
+        {
+            var user = await _signIn.UserManager.GetUserbyemailwithAddress(User);
+            if (user.address == null)
+            {
+                user.address = addressDto.ToEntity();
+
+            }
+            else
+            {
+                user.address.UpdateFromDto(addressDto);
+            }
+            var result = await _signIn.UserManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Problem updating the Address");
+
+
+            }
+            return Ok(user.address.ToDto());
         }
     }
 }

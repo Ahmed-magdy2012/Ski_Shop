@@ -129,7 +129,7 @@ export class CartSignalService {
 
 
   createCart(): ShopCart {
-    const cart = new ShopCart()
+    const cart = new ShopCart();
     localStorage.setItem("cart_id", cart.id)
     console.log(cart)
     return cart;

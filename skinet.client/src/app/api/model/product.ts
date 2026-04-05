@@ -7,16 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-
-
-export interface Product { 
-    id: number;
-    name: string | null;
-    description: string | null;
-    price: number;
-    pictureUrl: string | null;
-    type: string | null;
-    quantityInStock?: number;
-    brand: string | null;
+export interface Product {
+  id: number;
+  name: string | null;
+  description: string | null;
+  price: number;
+  pictureUrl: string | null;
+  type: string | null;
+  quantityInStock?: number;
+  brand: string | null;
 }
-

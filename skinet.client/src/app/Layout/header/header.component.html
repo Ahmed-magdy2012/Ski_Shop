@@ -2,7 +2,7 @@
 
 <header class=" fixed top-0 z-50 mb-0 max-h-20 w-full bg-white p-3 shadow-lg">
     <div class="mx-auto flex max-w-screen-2xl items-center justify-between">
-        <img routerLink="/" src="/images/logo.png " class="max-h-16" alt="app logo" />
+        <img routerLink="/"  src="/images/logo.png " class="max-h-16" alt="app logo" />
         <nav class=" flex gap-3 text-xl uppercase">
             <a routerLink="/" routerLinkActive="active"
                [routerLinkActiveOptions]="{exact:true}">Home</a>
@@ -15,8 +15,19 @@
                 <mat-icon>shopping_cart</mat-icon>
 
             </a>
-            <button mat-stroked-button>Login</button>
-            <button mat-stroked-button>Register</button>
+            @if(accountService.currentuser()){
+            <button mat-button [matMenuTriggerFor]="menu" >
+                <mat-icon>arrow_drop_down</mat-icon>
+                <span>{{accountService.currentuser()?.email}}</span>
+
+            </button>
+
+            }
+            @else{
+            <button routerLink="/login"  mat-stroked-button >Login</button>
+            <button routerLink ="/register" mat-stroked-button>Register</button>
+            }
+
 
         </div>
       
@@ -28,3 +39,19 @@
 @if(busyService.loading){
 <mat-progress-bar mode="indeterminate" class="fixed top-14"></mat-progress-bar>
 }
+<mat-menu #menu="matMenu" class="px-4">
+    <button mat-menu-item class="px-3" routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+        My Cart
+    </button>
+
+    <button mat-menu-item class="px-3" routerLink="/orders">
+        <mat-icon>history</mat-icon>
+        My Orders
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item class="px-3"(click)="logout()">
+        <mat-icon>logout</mat-icon>
+     Logout
+    </button>
+</mat-menu>

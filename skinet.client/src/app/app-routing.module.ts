@@ -8,6 +8,10 @@ import { NotFoundComponent } from './Shared/components/not-found/not-found.compo
 import { ServerErrorComponent } from './Shared/components/server-error/server-error.component';
 import { CartComponent } from './features/cart/cart.component';
 import { ChekoutComponent } from './features/chekout/chekout.component';
+import { LoginComponent } from './features/account/login/login.component';
+import { RegisterComponent } from './features/account/register/register.component';
+import { authGuard } from './Core/guards/auth.guard';
+import { emptyCartGuard } from './Core/guards/empty-crt.guard';
 
 export const routes: Routes = [
 
@@ -18,10 +22,9 @@ export const routes: Routes = [
   { path: 'test-error', component: TestErrorComponent },
   { path: 'NotFound', component: NotFoundComponent },
   { path: 'server', component: ServerErrorComponent },
-  { path: 'checkout', component: ChekoutComponent },
-  { path: '**', redirectTo: "NotFound", pathMatch: "full" },
-
-
+  {
+    path: 'checkout', component: ChekoutComponent, canActivate: [authGuard, emptyCartGuard]
+  }
 ];
 
 @NgModule({

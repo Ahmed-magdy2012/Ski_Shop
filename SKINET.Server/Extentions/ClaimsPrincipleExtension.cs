@@ -22,5 +22,17 @@ namespace SKINET.Server.NewFolder
             return Userinfo;
 
         }
+
+
+        public static async Task<AppUser> GetUserbyemailwithAddress(this UserManager<AppUser> userManger, ClaimsPrincipal user)
+        {
+            var Userinfo = await userManger.Users.
+                Include(x=>x.address).
+                FirstOrDefaultAsync(x => x.Email == user.GetEmail());
+            if (Userinfo == null) throw new AuthenticationException("User not found");
+
+            return Userinfo;
+
+        }
     }
 }

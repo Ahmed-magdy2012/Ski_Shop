@@ -16,10 +16,16 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins("https://localhost:4296")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
+           
     });
+
 });
+
+
 // Add services to the container.
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     var config = builder.Configuration.GetConnectionString("Redis")
@@ -45,11 +51,26 @@ builder.Configuration.GetConnectionString("Default")
 
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    c => {
+        c.AddServer(new OpenApiServer
+        {
+            Description = "Ski",
+            Url = "https://localhost:7038"
+        });
+
+        c.CustomOperationIds(e =>
+        e.ActionDescriptor.RouteValues.TryGetValue("action", out var action)
+        ? action
+        : e.ActionDescriptor.DisplayName
+);
+    });
 
 var app = builder.Build();
 app.UseMiddleware<middlewareException>();
+
 app.UseCors("AllowAngular");
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -63,6 +84,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
