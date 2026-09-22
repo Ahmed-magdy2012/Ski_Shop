@@ -1,0 +1,52 @@
+<div class="orders-page">
+
+    <!-- Header -->
+    <div class="orders-header">
+        <mat-icon class="header-icon">receipt_long</mat-icon>
+        <div>
+            <h1 class="page-title">My Orders</h1>
+            <p class="page-subtitle">{{ orders.length }} order{{ orders.length !== 1 ? 's' : '' }} found</p>
+        </div>
+    </div>
+
+    @if (orders.length === 0) {
+    <div class="empty-state">
+        <mat-icon class="empty-icon">shopping_bag</mat-icon>
+        <h2>No orders yet</h2>
+        <p>Your orders will appear here once you place them.</p>
+    </div>
+    }
+    @if (orders.length > 0) {
+    <div class="orders-list">
+        @for (order of orders; track order.id) {
+        <mat-card routerLink="/orders/{{order.id}}" class="order-card">
+
+            <div class="order-row">
+
+                <div class="order-info">
+                    <span class="order-id">#{{ order.id }}</span>
+                    <span class="order-date" *ngIf="order.orderDate">
+                        <mat-icon inline>calendar_today</mat-icon>
+                        {{ order.orderDate | date: 'MMM d, yyyy' }}
+                    </span>
+                </div>
+
+                <!-- Status Badge -->
+                <div class="status-badge" [ngClass]="getStatusClass(order.status)">
+                    <mat-icon inline>{{ getStatusIcon(order.status) }}</mat-icon>
+                    {{ getStatusLabel(order.status) }}
+                </div>
+
+                <!-- Total -->
+                <div class="order-total">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount">{{ order.total | currency: 'USD' }}</span>
+                </div>
+
+            </div>
+
+        </mat-card>
+        }
+    </div>
+    }
+</div>

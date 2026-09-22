@@ -1,6 +1,5 @@
-<section>
+﻿<section class="container mx-auto" >
     @if(cartservice.cart()?.items?.length! > 0){
-    <div class="mx-auto max-w-screen-xl">
         <div class="mt-32 flex w-full gap-6">
             <div class="w-3/4">
                 @if (cartservice.cart(); as cart) {
@@ -14,7 +13,6 @@
                 <app-ordar-summary></app-ordar-summary>
             </div>
         </div>
-    </div>
     }
     @else{
         <app-empty-state></app-empty-state>

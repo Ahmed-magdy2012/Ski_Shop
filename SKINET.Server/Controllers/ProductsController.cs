@@ -1,4 +1,5 @@
-﻿ using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SKINET.Server.Entities;
 using SKINET.Server.Entities.Interfaces;
@@ -11,16 +12,17 @@ namespace SKINET.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController(IGenericRepository<Product> repo) : ControllerBase
+    public class ProductsController(IUnitOfWork unit) : ControllerBase
     {
     
         
         [HttpGet]
         public async Task<ActionResult<Pagination<Product>>> GetProducts([FromQuery]ProductParams param)
         {
+            Console.WriteLine(param.Search);
             var spec = new ProductSpecification(param);
-            var products = await repo.ListAsync(spec);
-            var count=await repo.count(spec);
+            var products = await unit.Repository<Product>().ListAsync(spec);
+            var count=await unit.Repository<Product>().count(spec);
             var pagination=new Pagination<Product>(param.Pageindex, param.Pagesize,count,products);
 
             return Ok(pagination);
@@ -28,39 +30,48 @@ namespace SKINET.Server.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await repo.GetProductByID(id);
+            var product = await unit.Repository<Product>().GetByID(id);
             if (product == null) return  NotFound();
             return product;
         }
+
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProducts(Product product)
         {
-            repo.Add(product);
-           if (await repo.Saveall())
+            unit.Repository<Product>().Add(product);
+           if (await unit.Complete())
             {
                 return CreatedAtAction("GetProduct", new {id=product.Id,product});
             } 
             return BadRequest("problem in creating product");
         }
+
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Updateproduct(int id, Product item)
         {
             if (item.Id != id || !Productexits(id)) return BadRequest("cannot Update");
-            repo.Update(item); 
-            if(await repo.Saveall())
+            unit.Repository<Product>().Update(item); 
+            if(await unit.Complete())
                 return NoContent(); 
             
             return BadRequest("problem updating the product");
 
 
         }
+
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Deleteproduct(int id, Product item)
         {
-          var product= await  repo.GetProductByID(id);
-            if (product == null) return NotFound(); 
-            repo.Delete(product);
-            if (await repo.Saveall())
+          var product= await unit.Repository<Product>().GetByID(id);
+            if (product == null) return NotFound();
+            unit.Repository<Product>().Delete(product);
+            if (await unit.Complete())
             {
                 return CreatedAtAction("GetProduct", new { id = product.Id, product });
             }
@@ -71,7 +82,7 @@ namespace SKINET.Server.Controllers
         {
             var Brands = new BrandSpecification();
 
-            return Ok(await repo.ListAsync(Brands));
+            return Ok(await unit.Repository<Product>().ListAsync(Brands));
 
         }
         [HttpGet("types")]
@@ -80,12 +91,12 @@ namespace SKINET.Server.Controllers
 
             var Types = new ListofTypeSpecification();
 
-            return Ok(await repo.ListAsync(Types));
+            return Ok(await unit.Repository<Product>().ListAsync(Types));
         }
 
         private bool Productexits(int id)
         {
-            return repo.exists(id);
+            return unit.Repository<Product>().exists(id);
         }
 
     }

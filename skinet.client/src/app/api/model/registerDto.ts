@@ -8,14 +8,15 @@
  * Do not edit the class manually.
  */
 
-import { Address } from "./addressDto";
+import { AddressDto } from "./addressDto";
 
 
 
 export interface User { 
- firstName: string| null;
+  firstName: string| null;
   lastName: string | null;
   email: string | null;
   password: string | null;
+  address?: AddressDto | null;
 }
 

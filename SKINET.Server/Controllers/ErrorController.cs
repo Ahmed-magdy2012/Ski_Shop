@@ -36,13 +36,16 @@ namespace SKINET.Server.Controllers
         {
             return Ok();
         }
-        [Authorize]
-        [HttpGet("secret")]
-        public IActionResult Getsecretn()
+        [Authorize(Roles ="Admin")]
+        [HttpGet("admin-secret")]
+        public IActionResult Getsecretnadmin()
         {
             var name = User.FindFirst(ClaimTypes.Name)?.Value;
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return Ok(name + id);
+            var Roles = User.FindFirstValue(ClaimTypes.Role);
+
+            var isadmin = User.IsInRole("Admin");
+            return Ok(name + id+ Roles);
         }
 
     }

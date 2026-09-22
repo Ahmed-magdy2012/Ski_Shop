@@ -101,7 +101,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/confirmEmail`;
+      let localVarPath = `/api/confirmEmail`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('get', `${basePath}${localVarPath}`,
             {
@@ -152,7 +152,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/manage/info`;
+      let localVarPath = `/api/manage/info`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<InfoResponse>('get', `${basePath}${localVarPath}`,
             {
@@ -211,7 +211,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/forgotPassword`;
+        let localVarPath = `/api/forgotPassword`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
             {
@@ -279,7 +279,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/login`;
+        let localVarPath = `/api/login`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<AccessTokenResponse>('post', `${basePath}${localVarPath}`,
             {
@@ -342,7 +342,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/manage/2fa`;
+      let localVarPath = `/api/manage/2fa`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<TwoFactorResponse>('post', `${basePath}${localVarPath}`,
             {
@@ -403,7 +403,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/manage/info`;
+      let localVarPath = `/api/manage/info`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<InfoResponse>('post', `${basePath}${localVarPath}`,
             {
@@ -463,7 +463,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/refresh`;
+      let localVarPath = `/api/refresh`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<AccessTokenResponse>('post', `${basePath}${localVarPath}`,
             {
@@ -523,7 +523,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/register`;
+      let localVarPath = `/api/register`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
             {
@@ -582,7 +582,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/resendConfirmationEmail`;
+      let localVarPath = `/api/resendConfirmationEmail`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
             {
@@ -642,7 +642,7 @@ export class SKINETServerService extends BaseService {
             }
         }
 
-        let localVarPath = `/resetPassword`;
+      let localVarPath = `/api/resetPassword`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
             {

@@ -1,0 +1,140 @@
+<div class="detail-page">
+
+    @if (!order) {
+    <div class="empty-state">
+        <mat-icon class="empty-icon">receipt_long</mat-icon>
+        <p>Order not found.</p>
+    </div>
+    }
+
+    @if (order) {
+
+    <div class="detail-header">
+        <div class="header-left">
+            <mat-icon class="header-icon">receipt_long</mat-icon>
+            <div>
+                <h1 class="page-title">Order <span class="order-id">#{{ order.id }}</span></h1>
+                @if (order.orderDate) {
+                <p class="page-subtitle">
+                    <mat-icon inline>calendar_today</mat-icon>
+                    {{ order.orderDate | date: 'MMMM d, yyyy · h:mm a' }}
+                </p>
+                }
+            </div>
+
+        </div>
+
+        <div class="status-badge" [ngClass]="getStatusClass(order.status)">
+            <mat-icon inline>{{ getStatusIcon(order.status) }}</mat-icon>
+            {{ getStatusLabel(order.status) }}
+        </div>
+        <button mat-stroked-button routerLink="/orders">Return to orders</button>
+
+    </div>
+
+    <!-- Info Grid -->
+    <div class="info-grid">
+
+        <!-- Buyer -->
+        <mat-card class="info-card">
+            <div class="info-card-title">
+                <mat-icon class="icon-display">person</mat-icon>
+                Buyer
+            </div>
+            <mat-divider></mat-divider>
+            <div class="info-card-body">
+                <span class="info-row">
+                    <mat-icon inline class="icon-display">email</mat-icon>
+                    {{ order.buyerEmail ?? '—' }}
+                </span>
+            </div>
+        </mat-card>
+
+        <!-- Shipping Address -->
+        <mat-card class="info-card"> 
+            <div class="info-card-title">
+                <mat-icon class="icon-display">location_on</mat-icon>
+                Shipping Address
+            </div>
+            <mat-divider></mat-divider>
+            <div class="info-card-body">
+                <strong>{{ order.shippingAddress.line1 }}</strong>
+                <span>{{ order.shippingAddress.city }}, {{ order.shippingAddress.state }}</span>
+                <span>{{ order.shippingAddress.country }} · {{ order.shippingAddress.line2 }}</span>
+            </div>
+        </mat-card>
+
+        <!-- Delivery & Payment -->
+        <mat-card class="info-card">
+            <div class="info-card-title">
+                <mat-icon class="icon-display">local_shipping</mat-icon>
+                Delivery & Payment
+            </div>
+            <mat-divider></mat-divider>
+            <div class="info-card-body">
+                <span class="info-row">
+                    <mat-icon inline class="icon-display">directions_car</mat-icon>
+                    {{ order.Deliverymethod ?? '—' }}
+                </span>
+                <span class="info-row">
+                    <mat-icon inline class="icon-display">credit_card</mat-icon>
+                    {{ order.payment.brand }} ···· {{ order.payment.last4 }}
+                </span>
+            </div>
+        </mat-card>
+
+    </div>
+
+    <!-- Order Items -->
+    @if (order.orderItems && order.orderItems.length > 0) {
+    <mat-card class="items-card">
+        <div class="info-card-title">
+            <mat-icon class="icon-display">inventory_2</mat-icon>
+            Order Items
+        </div>
+        <mat-divider></mat-divider>
+
+        <div class="items-list">
+            @for (item of order.orderItems; track item.productId) {
+            <div class="item-row">
+                <div class="item-img-wrap">
+                    @if (item.pictureUrl) {
+                    <img [src]="item.pictureUrl" [alt]="item.productName ?? ''" class="item-img">
+                    } @else {
+                    <mat-icon class="item-img-placeholder-icon">image</mat-icon>
+                    }
+                </div>
+                <div class="item-details">
+                    <span class="item-name">{{ item.productName }}</span>
+                    <span class="item-qty">Qty: {{ item.quantity }}</span>
+                </div>
+                <span class="item-price">{{ item.price | currency: 'USD' }}</span>
+            </div>
+
+            <mat-divider></mat-divider>
+            }
+        </div>
+
+        <!-- Totals -->
+        <div class="totals-section">
+            @if (order.shippingPrice !== undefined) {
+            <div class="total-row">
+                <span class="total-row-label">Subtotal</span>
+                <span class="total-row-value">{{ getSubtotal() | currency: 'USD' }}</span>
+            </div>
+            <div class="total-row">
+                <span class="total-row-label">Shipping</span>
+                <span class="total-row-value">{{ order.shippingPrice | currency: 'USD' }}</span>
+            </div>
+            <mat-divider></mat-divider>
+            }
+            <div class="total-row grand">
+                <span class="grand-label">Total</span>
+                <span class="grand-amount">{{ order.total | currency: 'USD' }}</span>
+            </div>
+        </div>
+
+    </mat-card>
+    }
+
+    }

@@ -1,11 +1,15 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SKINET.Server.Entities;
 using SKINET.Server.Entities.Interfaces;
 using SKINET.Server.Infrastracture.Data;
 using SKINET.Server.Infrastracture.NewFolder;
+using SKINET.Server.Infrastracture.Services;
 using SKINET.Server.Middlewares;
+using SKINET.Server.NewFolder;
 using StackExchange.Redis;
+using System.Text.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,12 +41,18 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 builder.Services.AddSingleton<ICartService, CartService>();
 
 builder.Services.AddAuthentication();
-builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<StoreContext>();
+builder.Services.AddIdentityApiEndpoints<AppUser>().AddRoles<IdentityRole>().
+    AddEntityFrameworkStores<StoreContext>();
 
-builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepo<>));
-builder.Services.AddControllers();
-
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IUnitOfWork, UnitodWork>();
+builder.Services.AddSignalR();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(
 builder.Configuration.GetConnectionString("Default")
@@ -70,11 +80,11 @@ var app = builder.Build();
 app.UseMiddleware<middlewareException>();
 
 app.UseCors("AllowAngular");
+app.UseCors("CorsPolicy");
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -88,11 +98,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapIdentityApi<AppUser>();
-
-var scope =app.Services.CreateScope().ServiceProvider.GetRequiredService<StoreContext>();
-await scope.Database.MigrateAsync();
-await SeedData.seeding(scope);
+app.MapGroup("api").MapIdentityApi<AppUser>();
+app.MapHub<NotificationHub>("/hub/notifications");
+var scope = app.Services.CreateScope();
+var services =scope.ServiceProvider;
+var context=services.GetRequiredService<StoreContext>();
+var userManager = services.GetRequiredService<UserManager<AppUser>>();
+await context.Database.MigrateAsync();
+await  SeedData.seeding(context,userManager);
 
 
 

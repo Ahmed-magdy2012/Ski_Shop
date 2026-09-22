@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { computed, inject, signal } from '@angular/core';
 import { CartItem, CartService, Product, ShopCart } from '../';
 import { map } from 'rxjs';
+import { Deliverymethod } from '../model/deliverymethod';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,16 @@ export class CartSignalService {
   private cartservcie = inject(CartService)
 
   cart = signal<ShopCart | null>(null)
+  selectedDelivery = signal<Deliverymethod | null>(null)
 
   itemCount = computed(() => {
     return this.cart()?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0
   })
   Totals = computed(() => {
+    const delivery = this.selectedDelivery();
 
     const subTotal = this.cart()?.items.reduce((sum, item) => sum + item.price * item.quantity, 0) ?? 0
-    const shipping = 0;
+    const shipping = delivery ? delivery.price:0;
     const discount = 0;
 
 

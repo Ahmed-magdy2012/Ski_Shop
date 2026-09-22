@@ -9,13 +9,13 @@
  */
 
 
-export interface Addresss { 
-    id?: number;
-    line1: string | null;
+export interface ShippingAddress { 
+    name?: string | null;
+    line1?: string | null;
     line2?: string | null;
-    city: string | null;
-    state: string | null;
-    postalCode: string | null;
-    country: string | null;
+    city?: string | null;
+    state?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
 }
 

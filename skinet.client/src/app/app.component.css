@@ -12,3 +12,14 @@ th, td {
 table {
     margin: 0 auto;
 }
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

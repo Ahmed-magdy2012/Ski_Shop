@@ -3,10 +3,19 @@ using System.Linq.Expressions;
 
 namespace SKINET.Server.Entities.Specifictions
 {
-    public class BaseSpecification<T>(Expression<Func<T, bool>>? ctor) : ISpecification<T>
+    public class BaseSpecification<T> : ISpecification<T>
     {
-        protected BaseSpecification():this(null) { }
-        public Expression<Func<T, bool>>? WhereBrandAndType => ctor;
+        protected BaseSpecification() : this(null) { }
+
+        private readonly Expression<Func<T, bool>>? _criteria;
+
+        protected BaseSpecification(Expression<Func<T, bool>>? criteria)
+        {
+            Criteria = criteria;
+        }
+
+
+        public Expression<Func<T, bool>>? Criteria { get; private set; }
 
         public Expression<Func<T, object>>? OrderBy { get; private set; }
 
@@ -20,15 +29,24 @@ namespace SKINET.Server.Entities.Specifictions
 
         public bool IspagingEnabeld { get; private set; }
 
+        public List<Expression<Func<T, object>>> Includes { get; } = [];
+
+
         public IQueryable<T> ApplyDATA(IQueryable<T> query)
         {
-            if(WhereBrandAndType != null)
+            if(Criteria != null)
             {
-                query= query.Where(WhereBrandAndType);
+                query= query.Where(Criteria);
             }
             return query;
         }
 
+        protected void AddInclude(Expression<Func<T, object>> expression)
+        {
+            Includes.Add(expression);
+        }
+
+        
         protected void AddorderBy(Expression<Func<T, object>> OrderBy)
         {
             this.OrderBy = OrderBy;
@@ -57,9 +75,9 @@ namespace SKINET.Server.Entities.Specifictions
  
         public Expression<Func<T, Tresult>>? Select { get; private set; }
 
-        protected void AddSelect(Expression<Func<T, Tresult>> ctor)
+        protected void AddSelect(Expression<Func<T, Tresult>> criteria)
         {
-            Select = ctor;
+            Select = criteria;
         }
 
     

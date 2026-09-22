@@ -1,5 +1,4 @@
 export * from './accessTokenResponse';
-export * from './address';
 export * from './addressDto';
 export * from './cartItem';
 export * from './createProductDto';

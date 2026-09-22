@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SKINET.Server.Entities;
+using SKINET.Server.Entities.order;
 using SKINET.Server.Infrastracture.Config;
 
 namespace SKINET.Server.Infrastracture.Data
@@ -10,6 +11,10 @@ namespace SKINET.Server.Infrastracture.Data
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> addresses { get; set; }
+        public DbSet<Deliverymethod> Deliverymethods { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

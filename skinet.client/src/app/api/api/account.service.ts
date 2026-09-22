@@ -17,11 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { Address } from '../model/address';
-// @ts-ignore
 import { AddressDto } from '../model/addressDto';
 // @ts-ignore
-import { User } from '../model/registerDto';
+import { RegisterDto } from '../model/registerDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -44,9 +42,9 @@ export class AccountService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createOrUpdateAddres(addressDto?: AddressDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<Address>;
-    public createOrUpdateAddres(addressDto?: AddressDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Address>>;
-    public createOrUpdateAddres(addressDto?: AddressDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Address>>;
+    public createOrUpdateAddres(addressDto?: AddressDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<AddressDto>;
+    public createOrUpdateAddres(addressDto?: AddressDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AddressDto>>;
+    public createOrUpdateAddres(addressDto?: AddressDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AddressDto>>;
     public createOrUpdateAddres(addressDto?: AddressDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -89,7 +87,7 @@ export class AccountService extends BaseService {
 
         let localVarPath = `/api/Account/address`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Address>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<AddressDto>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: addressDto,
@@ -194,8 +192,7 @@ export class AccountService extends BaseService {
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
-              reportProgress: reportProgress,
-      
+                reportProgress: reportProgress
             }
         );
     }
@@ -243,8 +240,7 @@ export class AccountService extends BaseService {
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
-              reportProgress: reportProgress,
-         
+                reportProgress: reportProgress
             }
         );
     }
@@ -254,10 +250,10 @@ export class AccountService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public register(registerDto?: User, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public register(registerDto?: User, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-  public register(registerDto?: User, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-  public register(registerDto?: User, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public register(registerDto?: RegisterDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public register(registerDto?: RegisterDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public register(registerDto?: RegisterDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public register(registerDto?: RegisterDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 

@@ -3,26 +3,32 @@ import { User } from '../model/registerDto';
 import { AccountService } from './account.service';
 import { shopParams } from '../model/shopParams';
 import { SKINETServerService } from './sKINETServer.service';
-import { Address } from '../model/addressDto';
+import { AddressDto } from '../model/addressDto';
 import { Router } from '@angular/router';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
+import { SignalRService } from './signal-r.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountForclientService {
+
+  private signalservice = inject(SignalRService)
   customizedApi = inject(AccountService);
   LoginServiceFromIDENTITY = inject(SKINETServerService)
   currentuser = signal<User | null>(null)
-    params = new shopParams()
+  params = new shopParams()
   private router = inject(Router)
    
 
   login(values: any, returnUrl: string) {
 
-   this.LoginServiceFromIDENTITY.hTTPPOSTLogin(true, true, values).pipe(
-      switchMap(() => this.getUserInfo())).subscribe({
-        next: () => this.router.navigateByUrl(returnUrl)
+  this.LoginServiceFromIDENTITY.hTTPPOSTLogin(true, true, values).pipe(
+    switchMap(() => this.getUserInfo())).subscribe({
+      next: () => {
+        this.signalservice.createHub()
+        this.router.navigateByUrl(returnUrl)
+      }
 
       })
    
@@ -38,20 +44,30 @@ export class AccountForclientService {
     return this.customizedApi.getUserInfo().pipe(
       map(user => {
         this.currentuser.set(user)
-        return user
       })
     ) 
   }
 
   logout() {
 
-    return this.customizedApi.logout();
+    return this.customizedApi.logout().pipe(
+      tap(() => this.signalservice.stopConnection()))
 
   }
 
-  updateAddress(address: Address) {
+  updateAddress(addressdto: AddressDto) {
 
-    return this.customizedApi.createOrUpdateAddres(address)
+    return this.customizedApi.createOrUpdateAddres(addressdto).pipe(
+      tap(
+        () => {
+          this.currentuser.update(user => {
+            if (user) user.address = addressdto
+            return user
+          })
+
+        }
+      )
+    )
 
   }
 

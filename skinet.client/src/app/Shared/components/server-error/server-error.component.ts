@@ -16,7 +16,7 @@ export class ServerErrorComponent {
     this.error = navigation?.extras.state?.['error'];
 
 
-    console.log(this.error?.StatusCode)
+    console.log(this.error)
 
   }
  

@@ -28,41 +28,28 @@ namespace SKINET.Server.Infrastracture.Data
             return context.Set<T>().Any(x => x.Id == id);
         }
 
-        public async Task<T> GetEntityPattern(ISpecification<T> SPEc)
+        public async Task<T? > GetEntityWithSpec(ISpecification<T> SPEc)
         {
-            throw new NotImplementedException();
+            return await Applyspecification(SPEc).FirstOrDefaultAsync();
         }
 
-        public Task<Tresult> GetEntityPattern<Tresult>(ISpecification<T, Tresult> SPEc)
+        public async   Task<Tresult?> GetEntityWithSpec<Tresult>(ISpecification<T, Tresult> SPEc)
         {
-            throw new NotImplementedException();
+            return await Applyspecification(SPEc).FirstOrDefaultAsync();
         }
 
-        public async Task<T?> GetProductByID(int id)
+        public async Task<T?> GetByID(int id)
         {
             return await context.Set<T>().FindAsync(id);
         }
-
+        
         public async Task<IReadOnlyList<T>> ListAllsync()
         {
             return await context.Set<T>().ToListAsync();
         }
 
-        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> SPEc)
-        {
-            return await Applyspecification(SPEc).ToListAsync();
-        }
 
-        public async Task<IReadOnlyList<Tresult>> ListAsync<Tresult>(ISpecification<T, Tresult> SPEc)
-        {
-            return await Applyspecification(SPEc).ToListAsync();
-        }
-
-        public async Task<bool> Saveall()
-        {
-            return await context.SaveChangesAsync() > 0;
-        }
-
+   
         public void Update(T entity)
         {
             context.Set<T>().Attach(entity);
@@ -75,6 +62,16 @@ namespace SKINET.Server.Infrastracture.Data
         private IQueryable<TResultt> Applyspecification<TResultt>(ISpecification<T, TResultt> spec)
         {
             return Specification<T>.Get<TResultt>(context.Set<T>().AsQueryable(), spec);
+        }
+
+        public  async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> SPEc)
+        {
+            return await Applyspecification(SPEc).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Tresult>> ListAsync<Tresult>(ISpecification<T, Tresult> SPEc)
+        {
+            return await Applyspecification(SPEc).ToListAsync();
         }
     }
 }

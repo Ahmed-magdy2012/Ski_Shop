@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SKINET.Server.DTOS;
 using SKINET.Server.Entities;
 using SKINET.Server.NewFolder;
@@ -65,6 +64,7 @@ namespace SKINET.Server.Controllers
                 user.Firstname,
                 user.LastName,
                 Address=  user.address?.ToDto(),
+                Roles=User.FindFirstValue(ClaimTypes.Role)
 
             });
 
@@ -86,7 +86,7 @@ namespace SKINET.Server.Controllers
 
         [Authorize]
         [HttpPost("address")]
-        public async Task<ActionResult<Address>> CreateOrUpdateAddres(AddressDto addressDto)
+        public async Task<ActionResult<AddressDto>> CreateOrUpdateAddres(AddressDto addressDto)
         {
             var user = await _signIn.UserManager.GetUserbyemailwithAddress(User);
             if (user.address == null)

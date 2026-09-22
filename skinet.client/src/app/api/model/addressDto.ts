@@ -9,7 +9,7 @@
  */
 
 
-export interface Address { 
+export interface AddressDto { 
     line1: string;
     line2?: string | null;
     city: string;

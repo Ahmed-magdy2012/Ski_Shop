@@ -8,8 +8,12 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\skinet.client\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="src\NewFolder\**" />
+    <TypeScriptConfiguration Remove="src\NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="src\app\Core\" />
-    <Folder Include="src\app\features\" />
+    <Folder Include="src\app\features\checkout\" />
     <Folder Include="src\app\Layout\" />
     <Folder Include="src\app\Shared\" />
   </ItemGroup>

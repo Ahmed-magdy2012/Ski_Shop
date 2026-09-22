@@ -1,4 +1,5 @@
-﻿using SKINET.Server.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SKINET.Server.Entities;
 using SKINET.Server.Entities.Interfaces;
 
 namespace SKINET.Server.Infrastracture.Data
@@ -7,9 +8,9 @@ namespace SKINET.Server.Infrastracture.Data
     {
         public static IQueryable<T> Get(IQueryable <T> query,ISpecification<T> specification)        
         {
-            if (specification.WhereBrandAndType != null)
+            if (specification.Criteria != null)
             {
-                query=query.Where(specification.WhereBrandAndType);
+                query=query.Where(specification.Criteria);
             }
             if (specification.OrderBy != null)
             {
@@ -23,6 +24,8 @@ namespace SKINET.Server.Infrastracture.Data
             {
                 query=query.Skip(specification.Skip).Take(specification.Take);
             }
+            query=specification.Includes.Aggregate(query,(current,include)=>current.Include(include));
+
             return query;
         }
         public static IQueryable<Tresult> Get<Tresult>(IQueryable<T> query, ISpecification<T,Tresult> specification)

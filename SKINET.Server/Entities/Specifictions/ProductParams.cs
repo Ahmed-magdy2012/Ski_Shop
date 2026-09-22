@@ -30,8 +30,8 @@
 
         public string Search
         {
-            get =>  _search; 
-            set { _search = value.ToLower(); }
+            get =>  _search;
+            set { _search = value?.ToLower() ?? ""; }
         }
 
     }
